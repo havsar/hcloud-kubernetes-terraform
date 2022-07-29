@@ -1,9 +1,9 @@
 terraform {
-    backend "remote" {
+        cloud {
         organization = "nicholaspearson"
 
         workspaces {
-            name = "nicholaspearson"
+            name = "hcloud-kubernetes-terraform"
         }
     }
 }
