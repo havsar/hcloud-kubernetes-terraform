@@ -1,9 +1,9 @@
 terraform {
-        cloud {
-        organization = "nicholaspearson"
+  cloud {
+    organization = "nicholaspearson"
 
-        workspaces {
-            name = "hcloud-kubernetes-terraform"
-        }
+    workspaces {
+      name = "hcloud-kubernetes-terraform"
     }
+  }
 }
