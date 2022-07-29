@@ -1,6 +1,6 @@
 #!/bin/bash
 yum check-update -y
-yum install iptables-services -y
+yum install iptables-services iproute-tc yum-utils device-mapper-persistent-data lvm2 -y
 systemctl enable --now iptables
 iptables -F
 iptables -A INPUT -p tcp -m tcp --dport 10250 -j ACCEPT
@@ -12,7 +12,6 @@ iptables -A INPUT -p udp -m udp --dport 4789 -j ACCEPT
 iptables -A INPUT -p udp -m udp --dport 8285 -j ACCEPT
 iptables -A INPUT -p udp -m udp --dport 8472 -j ACCEPT
 iptables-save > /etc/sysconfig/iptables
-yum install -y yum-utils device-mapper-persistent-data lvm2 -y
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo -y
 yum install docker-ce -y
 rm -rf /etc/containerd/config.toml
@@ -42,6 +41,13 @@ exclude=kubelet kubeadm kubectl
 EOF
 
 yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
 systemctl enable --now kubelet
 systemctl enable --now containerd
 systemctl enable --now docker
+
+cat > /etc/sysconfig/kubelet <<EOF
+KUBELET_EXTRA_ARGS=--cloud-provider=external
+EOF
+
+systemctl restart kubelet

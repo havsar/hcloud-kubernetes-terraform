@@ -2,7 +2,7 @@
 resource "hcloud_server" "workers" {
   name        = format("worker-%s.%s.%s", count.index + 1, var.cluster_tag, var.cluster_domain)
   count       = var.worker_instance_count
-  image       = "centos-7"
+  image       = "centos-stream-8"
   server_type = var.worker_instance_type
   ssh_keys    = [hcloud_ssh_key.root_openssh_public_key.id]
   user_data   = file("${path.module}/files/user-data/worker.tftpl")

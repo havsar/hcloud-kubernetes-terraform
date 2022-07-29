@@ -2,4 +2,5 @@
 .terraform.lock.hcl
 terraform.tfstate.backup
 terraform.tfstate
+.terraform.tfstate.lock.info
 files/certs/id_rsa*

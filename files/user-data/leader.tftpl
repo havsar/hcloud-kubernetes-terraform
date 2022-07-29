@@ -1,6 +1,7 @@
 #!/bin/bash
 yum check-update -y
 yum install iptables-services -y
+dnf install -y iproute-tc
 systemctl enable --now iptables
 iptables -F
 iptables -A INPUT -p tcp -m tcp --dport 6443 -j ACCEPT
@@ -45,12 +46,12 @@ EOF
 
 yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
-mkdir /etc/systemd/system/kubelet.service.d
-cat > /etc/systemd/system/kubelet.service.d/20-hcloud.conf <<EOF
-[Service]
-Environment="KUBELET_EXTRA_ARGS=--cloud-provider=external"
-EOF
-
 systemctl enable --now kubelet
 systemctl enable --now containerd
 systemctl enable --now docker
+
+cat > /etc/sysconfig/kubelet <<EOF
+KUBELET_EXTRA_ARGS=--cloud-provider=external
+EOF
+
+systemctl restart kubelet

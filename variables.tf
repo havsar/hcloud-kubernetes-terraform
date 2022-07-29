@@ -1,13 +1,13 @@
 variable "hcloud_token" {
-  sensitive = true
+  sensitive = false
 }
 
 variable "cloudflare_token" {
-  sensitive = true
+  sensitive = false
 }
 
 variable "cloudflare_zone_id" {
-  sensitive   = true
+  sensitive   = false
   description = "Cloudflare website zone id"
 }
 
@@ -25,6 +25,12 @@ variable "hcloud_location" {
   type        = string
   description = "Hetzner location used for all resources"
   default     = "fsn1-dc14"
+}
+
+variable "hcloud_lb_location" {
+  type        = string
+  description = "Hetzner location used for K8S LB resources"
+  default     = "fsn1"
 }
 
 variable "leader_instance_type" {

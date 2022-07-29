@@ -6,12 +6,13 @@ cluster_tag = "hks01"
 
 # Hetzner location used for all resources
 hcloud_location = "fsn1-dc14"
+hcloud_lb_location = "fsn1"
 
 # Type of instance to be used for the leader instance
-leader_instance_type = "cx21"
+leader_instance_type = "cpx31"
 
 # Type of instance to be used for worker instances
-worker_instance_type = "cx21"
+worker_instance_type = "cpx31"
 
 # Count of how many worker instances to create
 worker_instance_count = "3"
