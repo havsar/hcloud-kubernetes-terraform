@@ -29,9 +29,9 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
-        hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-        cloudflare_token: ${{ secrets.CLOUDFLARE_TOKEN }}
-        cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        tf_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+        tf_cloudflare_token: ${{ secrets.CLOUDFLARE_TOKEN }}
+        tf_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
