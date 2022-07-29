@@ -4,6 +4,10 @@ terraform {
       source  = "hetznercloud/hcloud"
       version = "1.35.0"
     }
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+      version = "3.20.0"
+    }
     local = {
       source  = "hashicorp/local"
       version = "2.2.3"
@@ -16,7 +20,6 @@ terraform {
       source = "hashicorp/template"
       version = "2.2.0"
     }
-
     ssh = {
       source  = "loafoe/ssh"
       version = "2.1.0"
@@ -29,4 +32,6 @@ provider "hcloud" {
   token = var.hcloud_token
 }
 
-
+provider "cloudflare" {
+  api_token = var.cloudflare_token
+}

@@ -2,6 +2,15 @@ variable "hcloud_token" {
   sensitive = true
 }
 
+variable "cloudflare_token" {
+  sensitive = true
+}
+
+variable "cloudflare_zone_id" {
+  sensitive = true
+  description = "Cloudflare website zone id"
+}
+
 variable "cluster_domain" {
   type        = string
   description = "Cluster Domain suffix e.g. cloud.domain.com"
