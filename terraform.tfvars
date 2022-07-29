@@ -1,8 +1,5 @@
-# Hetzner Cloud API token used to create infrastructure
-hcloud_token = ""
-
 # Cluster Domain
-cluster_domain = "cluster.local"
+cluster_domain = "cloud.umai.lol"
 
 # Cluster Unique Identifier
 cluster_tag = "hks01"
