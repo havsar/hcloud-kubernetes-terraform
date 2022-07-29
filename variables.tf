@@ -7,7 +7,7 @@ variable "cloudflare_token" {
 }
 
 variable "cloudflare_zone_id" {
-  sensitive = true
+  sensitive   = true
   description = "Cloudflare website zone id"
 }
 

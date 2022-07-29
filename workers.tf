@@ -1,13 +1,13 @@
 # Create Leader
 resource "hcloud_server" "workers" {
-  name        = format("worker-%s.%s.%s", count.index+1, var.cluster_tag, var.cluster_domain)
+  name        = format("worker-%s.%s.%s", count.index + 1, var.cluster_tag, var.cluster_domain)
   count       = var.worker_instance_count
   image       = "centos-7"
   server_type = var.worker_instance_type
   ssh_keys    = [hcloud_ssh_key.root_openssh_public_key.id]
-  user_data   = "${file("${path.module}/files/user-data/worker.tftpl")}"
-   
-  datacenter  = var.hcloud_location
+  user_data   = file("${path.module}/files/user-data/worker.tftpl")
+
+  datacenter = var.hcloud_location
 
   network {
     network_id = hcloud_network.sdn_cidr.id
@@ -43,7 +43,7 @@ resource "hcloud_server" "workers" {
     hcloud_server.leader,
     ssh_resource.leader_join_command
   ]
-  
+
 }
 
 resource "cloudflare_record" "worker_dns_record" {

@@ -5,7 +5,7 @@ terraform {
       version = "1.35.0"
     }
     cloudflare = {
-      source = "cloudflare/cloudflare"
+      source  = "cloudflare/cloudflare"
       version = "3.20.0"
     }
     local = {
@@ -17,7 +17,7 @@ terraform {
       version = "3.4.0"
     }
     template = {
-      source = "hashicorp/template"
+      source  = "hashicorp/template"
       version = "2.2.0"
     }
     ssh = {

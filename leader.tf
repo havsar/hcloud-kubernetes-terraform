@@ -1,13 +1,13 @@
 # Create Leader
 resource "hcloud_server" "leader" {
-  name        = format("leader-%s.%s.%s", count.index+1, var.cluster_tag, var.cluster_domain)
+  name        = format("leader-%s.%s.%s", count.index + 1, var.cluster_tag, var.cluster_domain)
   count       = 1
   image       = "centos-7"
   server_type = var.leader_instance_type
   ssh_keys    = [hcloud_ssh_key.root_openssh_public_key.id]
-  user_data   = "${file("${path.module}/files/user-data/leader.tftpl")}"
-   
-  datacenter  = var.hcloud_location
+  user_data   = file("${path.module}/files/user-data/leader.tftpl")
+
+  datacenter = var.hcloud_location
 
   network {
     network_id = hcloud_network.sdn_cidr.id
@@ -50,7 +50,7 @@ resource "hcloud_server" "leader" {
   depends_on = [
     hcloud_network_subnet.sdn_cidr_subnet
   ]
-  
+
 }
 
 resource "cloudflare_record" "leader_dns_record" {
