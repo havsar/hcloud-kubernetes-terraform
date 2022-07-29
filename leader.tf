@@ -26,7 +26,11 @@ resource "hcloud_server" "leader" {
       "mkdir -p /root/.kube",
       "cp -i /etc/kubernetes/admin.conf /root/.kube/config",
       "chown $(id -u):$(id -g) $HOME/.kube/config",
-      "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"
+      "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml",
+      "kubectl -n kube-system create secret generic hcloud --from-literal=token=${var.hcloud_token}",
+      "kubectl apply -f  https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm.yaml",
+      "kubectl -n kube-system create secret generic hcloud-csi --from-literal=token=${var.hcloud_token}",
+      "kubectl apply -f https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml"
     ]
 
     connection {
@@ -38,7 +42,9 @@ resource "hcloud_server" "leader" {
   }
 
 
-  labels = local.labels
+  labels = merge(local.labels, {
+    "Role" : "Leader"
+  })
 
   depends_on = [
     hcloud_network_subnet.sdn_cidr_subnet

@@ -35,10 +35,13 @@ resource "hcloud_server" "workers" {
   }
 
 
-  labels = local.labels
+  labels = merge(local.labels, {
+    "Role" : "Worker"
+  })
 
   depends_on = [
-    hcloud_server.leader
+    hcloud_server.leader,
+    ssh_resource.leader_join_command
   ]
   
 }
