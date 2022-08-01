@@ -1,4 +1,4 @@
-# Create Leader
+# Create Workers
 resource "hcloud_server" "workers" {
   name        = format("worker-%s.%s.%s", count.index + 1, var.cluster_tag, var.cluster_domain)
   count       = var.worker_instance_count
@@ -44,17 +44,4 @@ resource "hcloud_server" "workers" {
     ssh_resource.leader_join_command
   ]
 
-}
-
-resource "cloudflare_record" "worker_dns_record" {
-  count   = var.worker_instance_count
-  zone_id = var.cloudflare_zone_id
-  name    = hcloud_server.workers[count.index].name
-  value   = hcloud_server.workers[count.index].ipv4_address
-  type    = "A"
-  ttl     = 60
-
-  depends_on = [
-    hcloud_server.workers
-  ]
 }

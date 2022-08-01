@@ -1,14 +1,22 @@
 variable "hcloud_token" {
-  sensitive = false
+  sensitive = true
+}
+
+variable "cloudflare_enabled" {
+  type        = bool
+  description = "Enable/Disable Cloudflare Zone Management"
+  default     = true
 }
 
 variable "cloudflare_token" {
-  sensitive = false
+  sensitive = true
+  nullable  = var.cloudflare_enabled ? false : true
 }
 
 variable "cloudflare_zone_id" {
   sensitive   = false
   description = "Cloudflare website zone id"
+  nullable    = var.cloudflare_enabled ? false : true
 }
 
 variable "cluster_domain" {
@@ -67,9 +75,4 @@ variable "network_ip_range" {
   type        = string
   description = "Subnet to create for private communication. Must be part of the CIDR defined in `network_cidr`."
   default     = "10.0.1.0/24"
-}
-
-# Local variables used to reduce repetition
-locals {
-  node_username = "root"
 }

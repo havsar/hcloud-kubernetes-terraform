@@ -25,14 +25,9 @@ resource "hcloud_server" "leader" {
       "echo 'Completed cloud-init, starting cluster pre-flight checks/init...'",
       "curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash",
       "kubeadm init --pod-network-cidr=10.244.0.0/16",
-      "mkdir -p /root/.kube",
-      "cp -i /etc/kubernetes/admin.conf /root/.kube/config",
-      "chown root:root /root/.kube/config",
+      "export KUBECONFIG=/etc/kubernetes/admin.conf",
       "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml",
       "kubectl -n kube-flannel patch ds kube-flannel-ds --type json -p '[{\"op\":\"add\",\"path\":\"/spec/template/spec/tolerations/-\",\"value\":{\"key\":\"node.cloudprovider.kubernetes.io/uninitialized\",\"value\":\"true\",\"effect\":\"NoSchedule\"}}]'",
-      #"helm repo add cilium https://helm.cilium.io/",
-      #"helm install cilium cilium/cilium --version 1.12.0 --namespace kube-system --set tunnel=disabled --set ipv4NativeRoutingCIDR=10.244.0.0/16",
-      #"kubectl get pods --all-namespaces -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,HOSTNETWORK:.spec.hostNetwork --no-headers=true | grep '<none>' | awk '{print \"-n \"$1\" \"$2}' | xargs -L 1 -r kubectl delete pod",
       "kubectl -n kube-system create secret generic hcloud --from-literal=token=${var.hcloud_token} --from-literal=network=${hcloud_network.sdn_cidr.id}",
       "kubectl apply -f  https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml",
       "kubectl set env deployment -n kube-system hcloud-cloud-controller-manager HCLOUD_LOAD_BALANCERS_LOCATION=${var.hcloud_lb_location}",
@@ -61,19 +56,6 @@ resource "hcloud_server" "leader" {
     hcloud_network_subnet.sdn_cidr_subnet
   ]
 
-}
-
-resource "cloudflare_record" "leader_dns_record" {
-  count   = 1
-  zone_id = var.cloudflare_zone_id
-  name    = hcloud_server.leader[count.index].name
-  value   = hcloud_server.leader[count.index].ipv4_address
-  type    = "A"
-  ttl     = 60
-
-  depends_on = [
-    hcloud_server.leader
-  ]
 }
 
 resource "ssh_resource" "leader_join_command" {

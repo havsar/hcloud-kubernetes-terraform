@@ -1,3 +1,6 @@
+# Cloudflare Functionality
+cloudflare_enabled = true
+
 # Cluster Domain
 cluster_domain = "cloud.umai.lol"
 
