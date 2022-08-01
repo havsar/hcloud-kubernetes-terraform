@@ -77,7 +77,7 @@ resource "ssh_resource" "leader_kubeconfig" {
   private_key = tls_private_key.global_key.private_key_pem
 
   commands = [
-    "cat /root/.kube/config"
+    "cat /etc/kubernetes/admin.conf"
   ]
 
   depends_on = [
