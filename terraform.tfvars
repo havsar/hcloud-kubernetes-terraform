@@ -1,6 +1,3 @@
-# Cloudflare Functionality
-cloudflare_enabled = true
-
 # Cluster Domain
 cluster_domain = "cloud.umai.lol"
 
@@ -9,6 +6,8 @@ cluster_tag = "hks01"
 
 # Hetzner location used for all resources
 hcloud_location = "fsn1-dc14"
+
+# Hetzer load balancer location 
 hcloud_lb_location = "fsn1"
 
 # Type of instance to be used for the leader instance

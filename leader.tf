@@ -29,10 +29,10 @@ resource "hcloud_server" "leader" {
       "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml",
       "kubectl -n kube-flannel patch ds kube-flannel-ds --type json -p '[{\"op\":\"add\",\"path\":\"/spec/template/spec/tolerations/-\",\"value\":{\"key\":\"node.cloudprovider.kubernetes.io/uninitialized\",\"value\":\"true\",\"effect\":\"NoSchedule\"}}]'",
       "kubectl -n kube-system create secret generic hcloud --from-literal=token=${var.hcloud_token} --from-literal=network=${hcloud_network.sdn_cidr.id}",
+      "kubectl -n kube-system create secret generic hcloud-csi --from-literal=token=${var.hcloud_token}",
       "kubectl apply -f  https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml",
       "kubectl set env deployment -n kube-system hcloud-cloud-controller-manager HCLOUD_LOAD_BALANCERS_LOCATION=${var.hcloud_lb_location}",
       "kubectl set env deployment -n kube-system hcloud-cloud-controller-manager HCLOUD_LOAD_BALANCERS_USE_PRIVATE_IP=true",
-      "kubectl -n kube-system create secret generic hcloud-csi --from-literal=token=${var.hcloud_token}",
       "kubectl apply -f https://raw.githubusercontent.com/hetznercloud/csi-driver/v1.6.0/deploy/kubernetes/hcloud-csi.yml",
       "helm repo add traefik https://helm.traefik.io/traefik",
       "helm repo update",
@@ -46,7 +46,6 @@ resource "hcloud_server" "leader" {
       private_key = tls_private_key.global_key.private_key_pem
     }
   }
-
 
   labels = merge(local.labels, {
     "Role" : "Leader"

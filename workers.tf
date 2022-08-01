@@ -34,7 +34,6 @@ resource "hcloud_server" "workers" {
     }
   }
 
-
   labels = merge(local.labels, {
     "Role" : "Worker"
   })
